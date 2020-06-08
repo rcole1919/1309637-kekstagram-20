@@ -2,7 +2,7 @@
 
 var PHOTOS_NUMBER = 25;
 var AVATARS_NUMBER = 6;
-var COMMENTS_NUMBER = 3;
+var COMMENTS_NUMBER = 5;
 
 var NAMES = [
   'Игорь',
@@ -49,7 +49,7 @@ var getComment = function () {
 };
 
 var comments = [];
-for (var j = 0; j < getRandomNumber(COMMENTS_NUMBER); j++) {
+for (var j = 0; j < COMMENTS_NUMBER; j++) {
   comments.push(getComment());
 }
 
@@ -89,3 +89,33 @@ for (var i = 0; i < photos.length; i++) {
 }
 
 listPictures.appendChild(fragment);
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+bigPicture.querySelector('.big-picture__img').src = photos[0].url;
+
+var HTMLcomments = [];
+var n = 0;
+var getHTMLcomment = function () {
+  return '<li class="social__comment"><img class="social__picture" src="' + comments[n].avatar + '" alt="' + comments[n].name + '" width="35" height="35"><p class="social__text">' + comments[n].message + '</p></li>';
+};
+
+for (n = 0; n < COMMENTS_NUMBER; n++) {
+  HTMLcomments.push(getHTMLcomment());
+}
+
+var joinedComments = HTMLcomments.join(' ');
+
+bigPicture.querySelector('.social__comments').innerHTML = joinedComments;
+
+bigPicture.querySelector('.comments-count').textContent = photos[0].comments;
+bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
+bigPicture.querySelector('.social__caption').textContent = photos[0].description;
+
+var socialCommentCount = document.querySelector('.social__comment-count');
+socialCommentCount.classList.add('hidden');
+var commentsLoader = document.querySelector('.comments-loader');
+commentsLoader.classList.add('hidden');
+var body = document.querySelector('body');
+body.classList.add('modal-open');
