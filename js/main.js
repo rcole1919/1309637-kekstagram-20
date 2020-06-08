@@ -31,6 +31,11 @@ var getRandomNumber = function (value) {
   return Math.floor(Math.random() * value) + 1;
 };
 
+var getRandomNumberFromRange = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+  return Math.round(rand);
+};
+
 var getRandomElementFromArray = function (array) {
   return array[Math.floor(Math.random() * array.length)];
 };
@@ -43,23 +48,23 @@ var getComment = function () {
   };
 };
 
-var theseComments = [];
+var comments = [];
 for (var j = 0; j < getRandomNumber(COMMENTS_NUMBER); j++) {
-  theseComments.push(getComment());
+  comments.push(getComment());
 }
 
-var getPhoto = function () {
+var getPhoto = function (index) {
   return {
-    url: 'photos/' + getRandomNumber(PHOTOS_NUMBER) + '.jpg',
+    url: 'photos/' + (index + 1) + '.jpg',
     description: 'Красота',
-    likes: Math.floor(Math.random() * 185) + 16,
-    comments: theseComments
+    likes: getRandomNumberFromRange(15, 200),
+    comments: comments.length
   };
 };
 
 var photos = [];
 for (var k = 0; k < PHOTOS_NUMBER; k++) {
-  photos.push(getPhoto());
+  photos.push(getPhoto(k));
 }
 
 var listPictures = document.querySelector('.pictures');
