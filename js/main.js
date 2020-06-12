@@ -40,6 +40,14 @@ var getRandomElementFromArray = function (array) {
   return array[Math.floor(Math.random() * array.length)];
 };
 
+var getArray = function (number, func) {
+  var pins = [];
+  for (var j = 0; j < number; j++) {
+    pins.push(func(j));
+  }
+  return pins;
+};
+
 var getComment = function () {
   return {
     avatar: 'img/avatar-' + getRandomNumber(AVATARS_NUMBER) + '.svg',
@@ -47,11 +55,6 @@ var getComment = function () {
     name: getRandomElementFromArray(NAMES)
   };
 };
-
-var comments = [];
-for (var j = 0; j < COMMENTS_NUMBER; j++) {
-  comments.push(getComment());
-}
 
 var getPhoto = function (index) {
   return {
@@ -62,10 +65,19 @@ var getPhoto = function (index) {
   };
 };
 
-var photos = [];
-for (var k = 0; k < PHOTOS_NUMBER; k++) {
-  photos.push(getPhoto(k));
-}
+var getHTMLcomment = function (n) {
+  return '<li class="social__comment"><img class="social__picture" src="' + comments[n].avatar + '" alt="' + comments[n].name + '" width="35" height="35"><p class="social__text">' + comments[n].message + '</p></li>';
+};
+
+var comments = getArray(COMMENTS_NUMBER, getComment);
+
+var photos = getArray(PHOTOS_NUMBER, getPhoto);
+
+var HTMLcomments = getArray(COMMENTS_NUMBER, getHTMLcomment);
+
+var joinedComments = function () {
+  return HTMLcomments.join(' ');
+};
 
 var listPictures = document.querySelector('.pictures');
 
@@ -94,21 +106,7 @@ var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
 
 bigPicture.querySelector('.big-picture__img').src = photos[0].url;
-
-var HTMLcomments = [];
-var n = 0;
-var getHTMLcomment = function () {
-  return '<li class="social__comment"><img class="social__picture" src="' + comments[n].avatar + '" alt="' + comments[n].name + '" width="35" height="35"><p class="social__text">' + comments[n].message + '</p></li>';
-};
-
-for (n = 0; n < COMMENTS_NUMBER; n++) {
-  HTMLcomments.push(getHTMLcomment());
-}
-
-var joinedComments = HTMLcomments.join(' ');
-
-bigPicture.querySelector('.social__comments').innerHTML = joinedComments;
-
+bigPicture.querySelector('.social__comments').innerHTML = joinedComments();
 bigPicture.querySelector('.comments-count').textContent = photos[0].comments;
 bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
 bigPicture.querySelector('.social__caption').textContent = photos[0].description;
