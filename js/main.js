@@ -113,6 +113,27 @@ var commentsLoader = document.querySelector('.comments-loader');
 commentsLoader.classList.add('hidden');
 var body = document.querySelector('body');
 
+bigPicture.classList.remove('hidden');
+body.classList.add('modal-open');
+
+var socialFooterText = document.querySelector('.social__footer-text');
+var bigPictureCancel = document.querySelector('.big-picture__cancel');
+var onBigPicturePressEsc = function (evt) {
+  if (evt.key === 'Escape' && socialFooterText !== document.activeElement) {
+    closeBigPicture();
+  }
+};
+document.addEventListener('keydown', onBigPicturePressEsc);
+
+var closeBigPicture = function () {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onBigPicturePressEsc);
+  bigPictureCancel.removeEventListener('click', closeBigPicture);
+};
+
+bigPictureCancel.addEventListener('click', closeBigPicture);
+
 var uploadFile = document.querySelector('#upload-file');
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
 var imgUploadCancel = document.querySelector('#upload-cancel');
@@ -121,7 +142,7 @@ var getImgUploadOpen = function () {
   imgUploadOverlay.classList.remove('hidden');
 };
 
-var onPopupPressEsc = function (evt) {
+var onUploadPressEsc = function (evt) {
   if (evt.key === 'Escape' && hashtagsInput !== document.activeElement) {
     closeUploadOverlay();
   }
@@ -131,7 +152,7 @@ uploadFile.addEventListener('change', function (evt) {
   evt.preventDefault();
   body.classList.add('modal-open');
   getImgUploadOpen();
-  document.addEventListener('keydown', onPopupPressEsc);
+  document.addEventListener('keydown', onUploadPressEsc);
   imgUploadCancel.addEventListener('click', closeUploadOverlay);
 });
 
@@ -140,7 +161,7 @@ var closeUploadOverlay = function () {
   uploadFile.value = '';
   body.classList.remove('modal-open');
   document.removeEventListener('change', getImgUploadOpen);
-  document.removeEventListener('keydown', onPopupPressEsc);
+  document.removeEventListener('keydown', onUploadPressEsc);
   imgUploadCancel.removeEventListener('click', closeUploadOverlay);
 };
 
