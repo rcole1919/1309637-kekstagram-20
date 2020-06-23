@@ -113,7 +113,7 @@ var renderPicture = function (photo) {
     evt.preventDefault();
     renderLargePicture(photo);
     bigPictureCancel.addEventListener('click', closeBigPicture);
-    pictureElement.addEventListener('keydown', onBigPicturePressEsc);
+    document.addEventListener('keydown', onBigPicturePressEsc);
   };
 
   pictureElement.addEventListener('click', onClickPictureElement);
