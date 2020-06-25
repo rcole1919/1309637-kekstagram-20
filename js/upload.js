@@ -10,9 +10,7 @@
   };
 
   var onUploadPressEsc = function (evt) {
-    if (evt.key === 'Escape' && window.form.hashtagsInput !== document.activeElement) {
-      closeUploadOverlay();
-    }
+    window.util.onPressEsc(evt, window.form.hashtagsInput, closeUploadOverlay);
   };
 
   uploadFile.addEventListener('change', function (evt) {
