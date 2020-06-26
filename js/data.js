@@ -28,32 +28,11 @@
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
 
-  var getRandomNumber = function (value) {
-    return Math.floor(Math.random() * value) + 1;
-  };
-
-  var getRandomNumberFromRange = function (min, max) {
-    var rand = min - 0.5 + Math.random() * (max - min + 1);
-    return Math.round(rand);
-  };
-
-  var getRandomElementFromArray = function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
-  var getArray = function (number, func) {
-    var pins = [];
-    for (var j = 0; j < number; j++) {
-      pins.push(func(j));
-    }
-    return pins;
-  };
-
   var getComment = function () {
     return {
-      avatar: 'img/avatar-' + getRandomNumber(AVATARS_NUMBER) + '.svg',
-      message: getRandomElementFromArray(MESSAGES),
-      name: getRandomElementFromArray(NAMES)
+      avatar: 'img/avatar-' + window.util.getRandomNumber(AVATARS_NUMBER) + '.svg',
+      message: window.util.getRandomElementFromArray(MESSAGES),
+      name: window.util.getRandomElementFromArray(NAMES)
     };
   };
 
@@ -61,7 +40,7 @@
     return {
       url: 'photos/' + (index + 1) + '.jpg',
       description: 'Красота',
-      likes: getRandomNumberFromRange(15, 200),
+      likes: window.util.getRandomNumberFromRange(15, 200),
       comments: comments.length
     };
   };
@@ -70,11 +49,11 @@
     return '<li class="social__comment"><img class="social__picture" src="' + comments[n].avatar + '" alt="' + comments[n].name + '" width="35" height="35"><p class="social__text">' + comments[n].message + '</p></li>';
   };
 
-  var comments = getArray(COMMENTS_NUMBER, getComment);
+  var comments = window.util.getArray(COMMENTS_NUMBER, getComment);
 
-  var photos = getArray(PHOTOS_NUMBER, getPhoto);
+  var photos = window.util.getArray(PHOTOS_NUMBER, getPhoto);
 
-  var HTMLcomments = getArray(COMMENTS_NUMBER, getHTMLcomment);
+  var HTMLcomments = window.util.getArray(COMMENTS_NUMBER, getHTMLcomment);
 
   window.data = {
     PHOTOS_NUMBER: PHOTOS_NUMBER,

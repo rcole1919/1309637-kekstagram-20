@@ -5,7 +5,19 @@
   var SCALE_MAX_VALUE = 100;
   var SCALE_MIN_VALUE = 25;
   var SCALE_GRID = 25;
+
   var currentValue = SCALE_MAX_VALUE;
+
+  var getFilters = function (value) {
+    return [
+      '',
+      'grayscale(' + value * 1 + ')',
+      'sepia(' + value * 1 + ')',
+      'invert(' + value * 100 + '%)',
+      'blur(' + value * 3 + 'px)',
+      'brightness(' + (value * 2 + 1) + ')'
+    ];
+  };
 
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -16,18 +28,24 @@
 
   scaleControl.addEventListener('click', function (evt) {
     evt.preventDefault();
-    if (evt.target === scaleControlSmaller) {
-      currentValue = Math.max(SCALE_MIN_VALUE, currentValue - SCALE_GRID);
-    } else if (evt.target === scaleControlBigger) {
-      currentValue = Math.min(SCALE_MAX_VALUE, currentValue + SCALE_GRID);
+    if (evt.target === scaleControlSmaller || evt.target === scaleControlBigger) {
+      var newValue = currentValue + (evt.target === scaleControlSmaller ? -SCALE_GRID : SCALE_GRID);
+      if (newValue > SCALE_MAX_VALUE || newValue < SCALE_MIN_VALUE) {
+        return;
+      }
+      currentValue = newValue;
+      scaleControlValue.value = currentValue + '%';
+      imgUploadPreview.style.transform = 'scale(' + currentValue * 0.01 + ')';
     }
-    scaleControlValue.value = currentValue + '%';
-    imgUploadPreview.style.transform = 'scale(' + currentValue * 0.01 + ')';
   });
 
   var imgPreview = imgUploadPreview.querySelector('img');
   var filterInputs = document.querySelectorAll('.effects__radio');
   var effectLevel = document.querySelector('.img-upload__effect-level');
+  var effectLevelLine = document.querySelector('.effect-level__line');
+  var effectLevelPin = document.querySelector('.effect-level__pin');
+  var effectLevelDepth = document.querySelector('.effect-level__depth');
+  var effectLevelValue = document.querySelector('.effect-level__value');
 
   if (document.querySelector('#effect-none').checked) {
     effectLevel.style.display = 'none';
@@ -36,12 +54,53 @@
   var addFilter = function (evt) {
     imgPreview.removeAttribute('class');
     imgPreview.classList.add('effects__preview--' + evt.target.value);
+    imgPreview.style.filter = '';
     effectLevel.style.display = document.querySelector('#effect-none').checked ? 'none' : 'block';
+    effectLevelPin.style.left = effectLevelLine.offsetWidth + 'px';
+    effectLevelDepth.style.width = '100%';
   };
 
-  for (var inp = 0; inp < filterInputs.length; inp++) {
-    filterInputs[inp].addEventListener('change', addFilter);
+  for (var i = 0; i < filterInputs.length; i++) {
+    filterInputs[i].addEventListener('change', addFilter);
   }
+
+  effectLevelPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoord = evt.clientX;
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = startCoord - moveEvt.clientX;
+
+      startCoord = moveEvt.clientX;
+
+      var newLocation = effectLevelPin.offsetLeft - shift;
+      var filterValue = newLocation / effectLevelLine.offsetWidth;
+
+      if (newLocation < 0 || newLocation > effectLevelLine.offsetWidth) {
+        newLocation = newLocation < 0 ? 0 : effectLevelLine.offsetWidth;
+      }
+      effectLevelPin.style.left = newLocation + 'px';
+      effectLevelValue.value = newLocation * 100 / effectLevelLine.offsetWidth;
+      effectLevelDepth.style.width = effectLevelValue.value + '%';
+
+      for (i = 0; i < filterInputs.length; i++) {
+        if (imgPreview.classList.contains('effects__preview--' + filterInputs[i].value)) {
+          imgPreview.style.filter = getFilters(filterValue)[i];
+        }
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   hashtagsInput.addEventListener('input', function () {
     var hashtags = hashtagsInput.value.toUpperCase().split(' ');

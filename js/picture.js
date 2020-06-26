@@ -29,9 +29,7 @@
     pictureElement.querySelector('.picture__likes').textContent = photo.likes;
 
     var onBigPicturePressEsc = function (evt) {
-      if (evt.key === 'Escape' && socialFooterText !== document.activeElement) {
-        closeBigPicture();
-      }
+      window.util.onPressEsc(evt, socialFooterText, closeBigPicture);
     };
 
     var onClickPictureElement = function (evt) {
