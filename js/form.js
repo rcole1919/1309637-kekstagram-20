@@ -54,6 +54,7 @@
     effectLevel.style.display = 'none';
     effectLevelPin.style.left = effectLevelLine.offsetWidth + 'px';
     effectLevelDepth.style.width = '100%';
+    scaleControlValue.value = '100%';
     currentValue = SCALE_MAX_VALUE;
     imgUploadPreview.style.transform = 'scale(1)';
   };
