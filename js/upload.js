@@ -10,7 +10,9 @@
   };
 
   var onUploadPressEsc = function (evt) {
-    window.util.onPressEsc(evt, window.form.hashtagsInput, closeUploadOverlay);
+    if (window.form.hashtagsInput !== document.activeElement) {
+      window.util.onPressEsc(evt, closeUploadOverlay);
+    }
   };
 
   uploadFile.addEventListener('change', function (evt) {
@@ -28,5 +30,6 @@
     document.removeEventListener('change', getImgUploadOpen);
     document.removeEventListener('keydown', onUploadPressEsc);
     imgUploadCancel.removeEventListener('click', closeUploadOverlay);
+    window.form.getDefaultValue();
   };
 })();

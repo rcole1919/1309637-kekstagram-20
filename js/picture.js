@@ -62,7 +62,9 @@
     }
 
     var onBigPicturePressEsc = function (evt) {
-      window.util.onPressEsc(evt, socialFooterText, closeBigPicture);
+      if (socialFooterText !== document.activeElement) {
+        window.util.onPressEsc(evt, closeBigPicture);
+      }
     };
 
     var closeBigPicture = function () {
