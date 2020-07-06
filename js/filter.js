@@ -36,8 +36,8 @@
         document.removeEventListener('mousemove', onMouseMove);
       }
       effectLevelPin.style.left = newLocation + 'px';
-      effectLevelValue.value = newLocation * 100 / effectLevelLine.offsetWidth;
-      effectLevelDepth.style.width = effectLevelValue.value + '%';
+      effectLevelValue.value = Math.round(newLocation * 100 / effectLevelLine.offsetWidth);
+      effectLevelDepth.style.width = (newLocation * 100 / effectLevelLine.offsetWidth) + '%';
 
       for (var i = 0; i < window.form.filterInputs.length; i++) {
         if (window.form.imgPreview.classList.contains('effects__preview--' + window.form.filterInputs[i].value)) {

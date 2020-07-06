@@ -48,6 +48,17 @@
     effectLevelDepth.style.width = '100%';
   };
 
+  var getDefaultValue = function () {
+    imgPreview.removeAttribute('class');
+    imgPreview.style.filter = '';
+    effectLevel.style.display = 'none';
+    effectLevelPin.style.left = effectLevelLine.offsetWidth + 'px';
+    effectLevelDepth.style.width = '100%';
+    scaleControlValue.value = '100%';
+    currentValue = SCALE_MAX_VALUE;
+    imgUploadPreview.style.transform = 'scale(1)';
+  };
+
   for (var i = 0; i < filterInputs.length; i++) {
     filterInputs[i].addEventListener('change', addFilter);
   }
@@ -66,9 +77,67 @@
     }
   });
 
+  var main = document.querySelector('main');
+  var success = document.querySelector('#success')
+    .content
+    .querySelector('.success');
+
+  var error = document.querySelector('#error')
+    .content
+    .querySelector('.error');
+
+  var successButton = success.querySelector('.success__button');
+  var errorButton = error.querySelector('.error__button');
+
+  var messageHandler = function (node, button, closeFunc, onMessagePressEsc) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(node);
+    main.appendChild(fragment);
+    document.querySelector('.img-upload__overlay').classList.add('hidden');
+    button.addEventListener('click', closeFunc);
+    document.addEventListener('keydown', onMessagePressEsc);
+  };
+
+  var successHandler = function () {
+    messageHandler(success, successButton, closeSuccess, onSuccessPressEsc);
+  };
+
+  var errorHandler = function () {
+    messageHandler(error, errorButton, closeError, onErrorPressEsc);
+  };
+
+  var onSuccessPressEsc = function (evt) {
+    window.util.onPressEsc(evt, closeSuccess);
+  };
+  var onErrorPressEsc = function (evt) {
+    window.util.onPressEsc(evt, closeError);
+  };
+
+  var closeMessage = function (node, button, closeFunc, onMessagePressEsc) {
+    node.remove();
+    button.removeEventListener('click', closeFunc);
+    document.removeEventListener('keydown', onMessagePressEsc);
+    getDefaultValue();
+  };
+
+  var closeSuccess = function () {
+    closeMessage(success, successButton, closeSuccess, onSuccessPressEsc);
+  };
+
+  var closeError = function () {
+    closeMessage(error, errorButton, closeError, onErrorPressEsc);
+  };
+
+  var form = document.querySelector('.img-upload__form');
+  form.addEventListener('submit', function (evt) {
+    window.save(new FormData(form), successHandler, errorHandler);
+    evt.preventDefault();
+  });
+
   window.form = {
     hashtagsInput: hashtagsInput,
     filterInputs: filterInputs,
-    imgPreview: imgPreview
+    imgPreview: imgPreview,
+    getDefaultValue: getDefaultValue
   };
 })();
