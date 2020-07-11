@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var statusCode = {
+  var StatusCode = {
     OK: 200
   };
 
@@ -24,10 +24,15 @@
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
   };
 
+  var getOnlyUnique = function (it, index, array) {
+    return array.indexOf(it) === index;
+  };
+
   window.util = {
-    statusCode: statusCode,
+    StatusCode: StatusCode,
     getArray: getArray,
     onPressEsc: onPressEsc,
-    declination: declination
+    declination: declination,
+    getOnlyUnique: getOnlyUnique
   };
 })();

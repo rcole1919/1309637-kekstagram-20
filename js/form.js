@@ -65,12 +65,9 @@
 
   hashtagsInput.addEventListener('input', function () {
     var hashtags = hashtagsInput.value.toUpperCase().split(' ');
-    var onlyUnique = function (value, index, self) {
-      return self.indexOf(value) === index;
-    };
     if (!HASHTAG_RE.test(hashtagsInput.value)) {
       hashtagsInput.setCustomValidity('Хештег должен содержать как минимум один символ после решетки. Допустимые символы: a-z, A-Z, а-я, А-Я, 0-9. Длина хештега не более 20 символов, включая решетку. Можно ввести не более пяти хештегов');
-    } else if (hashtags.length !== hashtags.filter(onlyUnique).length) {
+    } else if (hashtags.length !== hashtags.filter(window.util.getOnlyUnique).length) {
       hashtagsInput.setCustomValidity('Хештеги не должны повторяться');
     } else {
       hashtagsInput.setCustomValidity('');
