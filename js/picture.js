@@ -96,18 +96,18 @@
     return pictureElement;
   };
 
-  var successHandler = function (photos) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photos.length; i++) {
-      fragment.appendChild(renderPicture(photos[i]));
+  var fragment = document.createDocumentFragment();
+  var renderPictureList = function (data) {
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(renderPicture(data[i]));
     }
 
     listPictures.appendChild(fragment);
   };
 
-  window.load(successHandler);
-
   window.picture = {
-    body: body
+    body: body,
+    listPictures: listPictures,
+    renderPictureList: renderPictureList
   };
 })();
