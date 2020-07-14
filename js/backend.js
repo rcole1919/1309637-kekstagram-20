@@ -21,11 +21,11 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === window.util.StatusCode.OK) {
         onSuccess(xhr.response);
-      } else {
-        onError();
+        return;
       }
+      onError();
     });
 
     xhr.open('POST', URL_SAVE);

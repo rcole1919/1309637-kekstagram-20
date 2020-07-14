@@ -22,14 +22,8 @@
     picture.querySelector('.likes-count').textContent = photo.likes;
     picture.querySelector('.social__caption').textContent = photo.description;
 
-    if (allCommentsNumber === 0) {
-      socialCommentCount.textContent = '';
-    } else if (allCommentsNumber === 1) {
-      socialCommentCount.innerHTML = allCommentsNumber + ' комментарий';
-    } else if (allCommentsNumber < COMMENTS_NUMBER) {
-      socialCommentCount.innerHTML = allCommentsNumber + ' комментария';
-    } else if (allCommentsNumber === COMMENTS_NUMBER) {
-      socialCommentCount.innerHTML = allCommentsNumber + ' комментариев';
+    if (allCommentsNumber <= COMMENTS_NUMBER) {
+      socialCommentCount.textContent = allCommentsNumber + ' ' + window.util.declination(allCommentsNumber, ['комментарий', 'комментария', 'комментариев']);
     } else {
       socialCommentCount.innerHTML = '5 из <span class="comments-count">' + allCommentsNumber + '</span> комментариев';
     }
@@ -102,18 +96,18 @@
     return pictureElement;
   };
 
-  var successHandler = function (photos) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photos.length; i++) {
-      fragment.appendChild(renderPicture(photos[i]));
+  var fragment = document.createDocumentFragment();
+  var renderPictureList = function (data) {
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(renderPicture(data[i]));
     }
 
     listPictures.appendChild(fragment);
   };
 
-  window.load(successHandler);
-
   window.picture = {
-    body: body
+    body: body,
+    listPictures: listPictures,
+    renderPictureList: renderPictureList
   };
 })();
