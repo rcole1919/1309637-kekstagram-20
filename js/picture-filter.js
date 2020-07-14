@@ -23,6 +23,14 @@
 
   var imgFilterButtons = document.querySelectorAll('.img-filters__button');
 
+  var onFilterChange = window.debounce(function () {
+    var pictures = window.picture.listPictures.querySelectorAll('.picture');
+    for (var j = 0; j < pictures.length; j++) {
+      window.picture.listPictures.removeChild(pictures[j]);
+    }
+    updatePictures(FILTERS[i]);
+  });
+
   var addButtonClickHandler = function (imgFilterButton) {
     imgFilterButton.addEventListener('click', function (evt) {
       evt.preventDefault();
@@ -32,11 +40,7 @@
       imgFilterButton.classList.add('img-filters__button--active');
       FILTERS[i] = imgFilterButton.id;
 
-      var pictures = window.picture.listPictures.querySelectorAll('.picture');
-      for (var j = 0; j < pictures.length; j++) {
-        window.picture.listPictures.removeChild(pictures[j]);
-      }
-      updatePictures(FILTERS[i]);
+      onFilterChange();
     });
   };
 
