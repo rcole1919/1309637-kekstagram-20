@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var URL_LOAD = 'https://javascript.pages.academy/kekstagram/data';
-  var URL_SAVE = 'https://javascript.pages.academy/kekstagram';
-
   window.load = function (onLoad) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -12,7 +9,7 @@
       onLoad(xhr.response);
     });
 
-    xhr.open('GET', URL_LOAD);
+    xhr.open('GET', window.const.URL_LOAD);
     xhr.send();
   };
 
@@ -21,14 +18,14 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === window.util.StatusCode.OK) {
+      if (xhr.status === window.const.StatusCode.OK) {
         onSuccess(xhr.response);
         return;
       }
       onError();
     });
 
-    xhr.open('POST', URL_SAVE);
+    xhr.open('POST', window.const.URL_SAVE);
     xhr.send(data);
   };
 })();

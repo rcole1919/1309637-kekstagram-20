@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var COMMENTS_NUMBER = 5;
   var listPictures = document.querySelector('.pictures');
   var bigPicture = document.querySelector('.big-picture');
   var body = document.querySelector('body');
@@ -22,7 +21,7 @@
     picture.querySelector('.likes-count').textContent = photo.likes;
     picture.querySelector('.social__caption').textContent = photo.description;
 
-    if (allCommentsNumber <= COMMENTS_NUMBER) {
+    if (allCommentsNumber <= window.const.COMMENTS_NUMBER) {
       socialCommentCount.textContent = allCommentsNumber + ' ' + window.util.declination(allCommentsNumber, ['комментарий', 'комментария', 'комментариев']);
     } else {
       socialCommentCount.innerHTML = '5 из <span class="comments-count">' + allCommentsNumber + '</span> комментариев';
@@ -34,13 +33,13 @@
 
     var HTMLcomments = window.util.getArray(allCommentsNumber, getHTMLcomment);
     var socialCommentList = picture.querySelector('.social__comments');
-    socialCommentList.innerHTML = HTMLcomments.slice(0, COMMENTS_NUMBER).join(' ');
+    socialCommentList.innerHTML = HTMLcomments.slice(0, window.const.COMMENTS_NUMBER).join(' ');
 
-    var j = COMMENTS_NUMBER;
+    var j = window.const.COMMENTS_NUMBER;
     var onLoadComments = function (evt) {
       evt.preventDefault();
-      socialCommentList.insertAdjacentHTML('beforeend', HTMLcomments.slice(j, j + COMMENTS_NUMBER).join(' '));
-      j += COMMENTS_NUMBER;
+      socialCommentList.insertAdjacentHTML('beforeend', HTMLcomments.slice(j, j + window.const.COMMENTS_NUMBER).join(' '));
+      j += window.const.COMMENTS_NUMBER;
       if (allCommentsNumber === socialCommentList.children.length) {
         commentsLoader.classList.add('hidden');
         commentsLoader.removeEventListener('click', onLoadComments);
@@ -49,7 +48,7 @@
 
     commentsLoader.addEventListener('click', onLoadComments);
 
-    if (allCommentsNumber > COMMENTS_NUMBER) {
+    if (allCommentsNumber > window.const.COMMENTS_NUMBER) {
       commentsLoader.classList.remove('hidden');
     } else {
       commentsLoader.classList.add('hidden');
@@ -68,7 +67,7 @@
       document.removeEventListener('keydown', onBigPicturePressEsc);
       bigPictureCancel.removeEventListener('click', closeBigPicture);
       commentsLoader.removeEventListener('click', onLoadComments);
-      j = COMMENTS_NUMBER;
+      j = window.const.COMMENTS_NUMBER;
     };
 
     bigPictureCancel.addEventListener('click', closeBigPicture);

@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  var StatusCode = {
-    OK: 200
-  };
-
   var getArray = function (number, func) {
     var pins = [];
     for (var j = 0; j < number; j++) {
@@ -39,7 +35,6 @@
   };
 
   window.util = {
-    StatusCode: StatusCode,
     getArray: getArray,
     onPressEsc: onPressEsc,
     declination: declination,

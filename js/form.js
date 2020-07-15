@@ -1,12 +1,7 @@
 'use strict';
 
 (function () {
-  var HASHTAG_RE = /^(#[a-zA-Zа-яА-Я0-9]{1,19})(\s#[a-zA-Zа-яА-Я0-9]{1,19}){0,4}$/;
-  var SCALE_MAX_VALUE = 100;
-  var SCALE_MIN_VALUE = 25;
-  var SCALE_GRID = 25;
-
-  var currentValue = SCALE_MAX_VALUE;
+  var currentValue = window.const.SCALE_MAX_VALUE;
 
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -18,8 +13,8 @@
   scaleControl.addEventListener('click', function (evt) {
     evt.preventDefault();
     if (evt.target === scaleControlSmaller || evt.target === scaleControlBigger) {
-      var newValue = currentValue + (evt.target === scaleControlSmaller ? -SCALE_GRID : SCALE_GRID);
-      if (newValue > SCALE_MAX_VALUE || newValue < SCALE_MIN_VALUE) {
+      var newValue = currentValue + (evt.target === scaleControlSmaller ? -window.const.SCALE_GRID : window.const.SCALE_GRID);
+      if (newValue > window.const.SCALE_MAX_VALUE || newValue < window.const.SCALE_MIN_VALUE) {
         return;
       }
       currentValue = newValue;
@@ -55,7 +50,7 @@
     effectLevelPin.style.left = effectLevelLine.offsetWidth + 'px';
     effectLevelDepth.style.width = '100%';
     scaleControlValue.value = '100%';
-    currentValue = SCALE_MAX_VALUE;
+    currentValue = window.const.SCALE_MAX_VALUE;
     imgUploadPreview.style.transform = 'scale(1)';
   };
 
@@ -64,8 +59,8 @@
   }
 
   hashtagsInput.addEventListener('input', function () {
-    var hashtags = hashtagsInput.value.toUpperCase().split(' ');
-    if (!HASHTAG_RE.test(hashtagsInput.value)) {
+    var hashtags = hashtagsInput.value.toLowerCase().split(' ');
+    if (!window.const.HASHTAG_RE.test(hashtagsInput.value)) {
       hashtagsInput.setCustomValidity('Хештег должен содержать как минимум один символ после решетки. Допустимые символы: a-z, A-Z, а-я, А-Я, 0-9. Длина хештега не более 20 символов, включая решетку. Можно ввести не более пяти хештегов');
     } else if (hashtags.length !== hashtags.filter(window.util.getOnlyUnique).length) {
       hashtagsInput.setCustomValidity('Хештеги не должны повторяться');
