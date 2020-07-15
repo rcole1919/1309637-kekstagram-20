@@ -1,14 +1,12 @@
 'use strict';
 
 (function () {
-  var MAX_RANDOM_PHOTOS = 10;
-  var FILTERS = ['filter-default', 'filter-random', 'filter-discussed'];
   var photos = [];
 
   var updatePictures = function (filter) {
     switch (filter) {
       case 'filter-random':
-        return window.picture.renderPictureList(window.util.shuffleArray(photos.slice()).slice(0, MAX_RANDOM_PHOTOS));
+        return window.picture.renderPictureList(window.util.shuffleArray(photos.slice()).slice(0, window.const.MAX_RANDOM_PHOTOS));
       case 'filter-discussed':
         return window.picture.renderPictureList(photos.slice().sort(function (a, b) {
           return b.comments.length - a.comments.length;
@@ -28,7 +26,7 @@
     for (var j = 0; j < pictures.length; j++) {
       window.picture.listPictures.removeChild(pictures[j]);
     }
-    updatePictures(FILTERS[i]);
+    updatePictures(window.const.FILTERS[i]);
   });
 
   var addButtonClickHandler = function (imgFilterButton) {
@@ -38,7 +36,7 @@
         imgFilterButtons[i].classList.remove('img-filters__button--active');
       }
       imgFilterButton.classList.add('img-filters__button--active');
-      FILTERS[i] = imgFilterButton.id;
+      window.const.FILTERS[i] = imgFilterButton.id;
 
       onFilterChange();
     });
