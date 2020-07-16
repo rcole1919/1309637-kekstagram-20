@@ -52,6 +52,7 @@
     scaleControlValue.value = '100%';
     currentValue = window.const.SCALE_MAX_VALUE;
     imgUploadPreview.style.transform = 'scale(1)';
+    hashtagsInput.value = '';
   };
 
   for (var i = 0; i < filterInputs.length; i++) {
@@ -62,10 +63,13 @@
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
     if (!window.const.HASHTAG_RE.test(hashtagsInput.value)) {
       hashtagsInput.setCustomValidity('Хештег должен содержать как минимум один символ после решетки. Допустимые символы: a-z, A-Z, а-я, А-Я, 0-9. Длина хештега не более 20 символов, включая решетку. Можно ввести не более пяти хештегов');
+      hashtagsInput.style.outline = window.const.OUTLINE_INVALID_STYLE;
     } else if (hashtags.length !== hashtags.filter(window.util.getOnlyUnique).length) {
       hashtagsInput.setCustomValidity('Хештеги не должны повторяться');
+      hashtagsInput.style.outline = window.const.OUTLINE_INVALID_STYLE;
     } else {
       hashtagsInput.setCustomValidity('');
+      hashtagsInput.removeAttribute('style');
     }
   });
 
@@ -124,6 +128,7 @@
   form.addEventListener('submit', function (evt) {
     window.save(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
+    document.querySelector('#upload-file').value = '';
   });
 
   window.form = {

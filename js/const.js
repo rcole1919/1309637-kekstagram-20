@@ -11,7 +11,10 @@
   var URL_LOAD = 'https://javascript.pages.academy/kekstagram/data';
   var URL_SAVE = 'https://javascript.pages.academy/kekstagram';
 
-  var HASHTAG_RE = /^(#[a-zA-Zа-яА-Я0-9]{1,19})(\s#[a-zA-Zа-яА-Я0-9]{1,19}){0,4}$/;
+  var HASHTAG_RE = /^(#[a-zA-Zа-яА-Я0-9]{1,19}){0,1}(\s#[a-zA-Zа-яА-Я0-9]{1,19}){0,4}$/;
+
+  var OUTLINE_INVALID_STYLE = '3px solid red';
+
   var FILTERS = [
     'filter-default',
     'filter-random',
@@ -38,6 +41,7 @@
     URL_LOAD: URL_LOAD,
     URL_SAVE: URL_SAVE,
     HASHTAG_RE: HASHTAG_RE,
+    OUTLINE_INVALID_STYLE: OUTLINE_INVALID_STYLE,
     FILTERS: FILTERS,
     FILE_TYPES: FILE_TYPES,
     StatusCode: StatusCode
