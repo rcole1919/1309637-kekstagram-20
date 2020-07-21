@@ -11,7 +11,7 @@
 
   var onUploadPressEsc = function (evt) {
     if (window.form.hashtagsInput !== document.activeElement) {
-      window.util.onPressEsc(evt, closeUploadOverlay);
+      window.util.onPressEsc(evt, onUploadOverlayClose);
     }
   };
 
@@ -20,16 +20,16 @@
     window.picture.body.classList.add('modal-open');
     getImgUploadOpen();
     document.addEventListener('keydown', onUploadPressEsc);
-    imgUploadCancel.addEventListener('click', closeUploadOverlay);
+    imgUploadCancel.addEventListener('click', onUploadOverlayClose);
   });
 
-  var closeUploadOverlay = function () {
+  var onUploadOverlayClose = function () {
     imgUploadOverlay.classList.add('hidden');
     uploadFile.value = '';
     window.picture.body.classList.remove('modal-open');
     document.removeEventListener('change', getImgUploadOpen);
     document.removeEventListener('keydown', onUploadPressEsc);
-    imgUploadCancel.removeEventListener('click', closeUploadOverlay);
+    imgUploadCancel.removeEventListener('click', onUploadOverlayClose);
     window.form.getDefaultValue();
   };
 })();

@@ -9,6 +9,7 @@
   var imgUploadPreview = document.querySelector('.img-upload__preview');
   var scaleControl = document.querySelector('.img-upload__scale');
   var hashtagsInput = document.querySelector('.text__hashtags');
+  var textDescription = document.querySelector('.text__description');
 
   scaleControl.addEventListener('click', function (evt) {
     evt.preventDefault();
@@ -34,7 +35,7 @@
     effectLevel.style.display = 'none';
   }
 
-  var addFilter = function (evt) {
+  var onfilterInputChange = function (evt) {
     imgPreview.removeAttribute('class');
     imgPreview.classList.add('effects__preview--' + evt.target.value);
     imgPreview.style.filter = '';
@@ -53,11 +54,14 @@
     currentValue = window.const.SCALE_MAX_VALUE;
     imgUploadPreview.style.transform = 'scale(1)';
     hashtagsInput.value = '';
+    document.querySelector('#upload-file').value = '';
+    textDescription.value = '';
+    window.picture.body.classList.remove('modal-open');
   };
 
-  for (var i = 0; i < filterInputs.length; i++) {
-    filterInputs[i].addEventListener('change', addFilter);
-  }
+  filterInputs.forEach(function (el) {
+    el.addEventListener('change', onfilterInputChange);
+  });
 
   hashtagsInput.addEventListener('input', function () {
     var hashtags = hashtagsInput.value.toLowerCase().split(' ');
@@ -85,7 +89,7 @@
   var successButton = success.querySelector('.success__button');
   var errorButton = error.querySelector('.error__button');
 
-  var messageHandler = function (node, button, closeFunc, onMessagePressEsc) {
+  var showMessage = function (node, button, closeFunc, onMessagePressEsc) {
     var fragment = document.createDocumentFragment();
     fragment.appendChild(node);
     main.appendChild(fragment);
@@ -94,19 +98,19 @@
     document.addEventListener('keydown', onMessagePressEsc);
   };
 
-  var successHandler = function () {
-    messageHandler(success, successButton, closeSuccess, onSuccessPressEsc);
+  var onSuccessShow = function () {
+    showMessage(success, successButton, onSuccessClose, onSuccessPressEsc);
   };
 
-  var errorHandler = function () {
-    messageHandler(error, errorButton, closeError, onErrorPressEsc);
+  var onErrorShow = function () {
+    showMessage(error, errorButton, onErrorClose, onErrorPressEsc);
   };
 
   var onSuccessPressEsc = function (evt) {
-    window.util.onPressEsc(evt, closeSuccess);
+    window.util.onPressEsc(evt, onSuccessClose);
   };
   var onErrorPressEsc = function (evt) {
-    window.util.onPressEsc(evt, closeError);
+    window.util.onPressEsc(evt, onErrorClose);
   };
 
   var closeMessage = function (node, button, closeFunc, onMessagePressEsc) {
@@ -116,19 +120,18 @@
     getDefaultValue();
   };
 
-  var closeSuccess = function () {
-    closeMessage(success, successButton, closeSuccess, onSuccessPressEsc);
+  var onSuccessClose = function () {
+    closeMessage(success, successButton, onSuccessClose, onSuccessPressEsc);
   };
 
-  var closeError = function () {
-    closeMessage(error, errorButton, closeError, onErrorPressEsc);
+  var onErrorClose = function () {
+    closeMessage(error, errorButton, onErrorClose, onErrorPressEsc);
   };
 
   var form = document.querySelector('.img-upload__form');
   form.addEventListener('submit', function (evt) {
-    window.save(new FormData(form), successHandler, errorHandler);
+    window.backend.save(new FormData(form), onSuccessShow, onErrorShow);
     evt.preventDefault();
-    document.querySelector('#upload-file').value = '';
   });
 
   window.form = {

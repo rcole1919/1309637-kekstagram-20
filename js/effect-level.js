@@ -39,11 +39,11 @@
       effectLevelValue.value = Math.round(newLocation * 100 / effectLevelLine.offsetWidth);
       effectLevelDepth.style.width = (newLocation * 100 / effectLevelLine.offsetWidth) + '%';
 
-      for (var i = 0; i < window.form.filterInputs.length; i++) {
-        if (window.form.imgPreview.classList.contains('effects__preview--' + window.form.filterInputs[i].value)) {
+      window.form.filterInputs.forEach(function (el, i) {
+        if (window.form.imgPreview.classList.contains('effects__preview--' + el.value)) {
           window.form.imgPreview.style.filter = getFilters(filterValue)[i];
         }
-      }
+      });
     };
 
     var onMouseUp = function (upEvt) {
