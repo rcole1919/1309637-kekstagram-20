@@ -89,12 +89,12 @@
   var successButton = success.querySelector('.success__button');
   var errorButton = error.querySelector('.error__button');
 
-  var showMessage = function (node, button, closeFunc, onMessagePressEsc) {
+  var showMessage = function (node, button, onMessageClose, onMessagePressEsc) {
     var fragment = document.createDocumentFragment();
     fragment.appendChild(node);
     main.appendChild(fragment);
     document.querySelector('.img-upload__overlay').classList.add('hidden');
-    button.addEventListener('click', closeFunc);
+    button.addEventListener('click', onMessageClose);
     document.addEventListener('keydown', onMessagePressEsc);
   };
 
@@ -113,9 +113,9 @@
     window.util.onPressEsc(evt, onErrorClose);
   };
 
-  var closeMessage = function (node, button, closeFunc, onMessagePressEsc) {
+  var closeMessage = function (node, button, onMessageClose, onMessagePressEsc) {
     node.remove();
-    button.removeEventListener('click', closeFunc);
+    button.removeEventListener('click', onMessageClose);
     document.removeEventListener('keydown', onMessagePressEsc);
     getDefaultValue();
   };
